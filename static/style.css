@@ -1,0 +1,189 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+body {
+  margin: 0;
+  padding: 20px;
+  background-color: #d1e0d9;
+  font-family: 'Roboto', sans-serif;
+}
+
+header {
+  	text-align: center;
+	color: black;
+	width: 100%;
+}
+.banner {
+	width: 30%;
+}
+
+li {
+  border-right: 1px solid #bbb;
+}
+
+li:last-child {
+  border-right: none;
+}
+
+ul {
+  list-style-type: none;
+  text-align: center;
+  margin: auto;
+  margin-top: 20px;
+  width: 50%;
+  padding: 20px;
+  overflow: hidden;
+  background-color: #005337;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+li {
+	display: inline;
+}
+
+li a {
+  display: inline;
+  color: white;
+  text-align: center;
+  margin: auto;
+  padding: 20px 16px;
+  text-decoration: none;
+}
+
+/* Change the link color to #111 (black) on hover */
+li a:hover {
+  background-color: #111;
+}
+
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Header/Blog Title */
+.header {
+  padding: 30px;
+  font-size: 40px;
+  text-align: center;
+  background: white;
+}
+
+/* Create two unequal columns that floats next to each other */
+/* Left column */
+
+.footer {
+  padding: 10px;
+  width: 50%;
+  margin: auto;
+  text-align: center;
+  background: #005337;
+  color: white;
+  margin-top: 20px;
+}
+
+.card img { 
+	width: 10%;
+	float: left;
+}
+
+@media screen and (max-width: 800px) {
+  ul {
+    width: 100%;
+  }
+  .footer {
+	  width: 100%;
+  }
+  .banner {
+	  width: 100%;
+  }
+  .card img {
+	  width: 35%;
+  }
+}
+
+.card {
+  background-color: #ffffff;
+  padding: 10px;
+  padding-bottom: 15px;
+  padding-top: 15px;
+  margin-top: 20px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  max-width: 940px;
+  margin: auto;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.card button {
+  border: none;
+  outline: 0;
+  margin-top: 10px;
+  padding: 12px;
+  color: black;
+  background-color: #d1e0d9;
+  text-align: center;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.card button:hover {
+  opacity: 0.7;
+}
+
+.button {
+  border: none;
+  outline: 0;
+  padding: 12px;
+  color: white;
+  background-color: #000;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+  font-size: 18px;
+}
+
+.button:hover {
+  opacity: 0.7;
+}
+.imageb {
+	width: 500px;
+	height: 100px;
+	border: 0.1px solid;
+	padding: 5px;
+}
+
+* {box-sizing:border-box}
+
+.bar {
+	margin: auto;
+	padding: 12px;
+	font-size: 18px;
+	width: 200px;
+	height: 50px;
+	border: solid;
+	color: black;
+	background-color: green;
+}
+
+.info {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  max-width: 700px;
+  margin-bottom: 100px;
+  margin-top: 20px;
+  background-color: #D3D3D3;
+  padding-left: 20px;
+  padding-top: 1px;
+  padding-bottom: 20px;
+  margin-top: 20px;
+  margin:auto;
+  margin-bottom: 20px;
+}
+
+
+.posttitle {
+	padding-left: 10px;
+}
