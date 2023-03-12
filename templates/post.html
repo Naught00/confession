@@ -1,37 +1,82 @@
 {% include 'header.html' %}
 
 <div class="card">
-		<img src="/static/images/anthony-gormley-cropped.webp"/> 
-		<div class="posttitle" style="padding-left: 120px;">
-		<h2 style="margin-top: 0px;margin-bottom: 0px"> Title of Confession </h2>  
-		<div class="time"> Submitted: 1 hour ago</div>
-		<br>
-			    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-			<br>
+	{%if post[3] %}
+	<img style="width: 92px; height: 65px" src="/static/images/uploads/{{ post[3] }}" />
+	{% else %}
+<img src="/static/images/anthony-gormley-cropped.webp"/> 
+        {% endif %}
+	<div class="posttitle" style="padding-left: 120px;">
+		<h2 style="margin-top: 0px;margin-bottom: 0px"> {{ post[1] }} </h2>  
+		<div class="time"> Submitted: 1 hour ago 
 		</div>
+		<br>
+		{{ post[2] }}
+		<br>
+			{%if post[3] %}
+	<div style="margin-top: 10px;margin-bottom: 10px">
+			<a class="replybutton" style="cursor: pointer;" href="/static/images/uploads/{{ post[3] }}"><b>Expand Image</b></a>
+	</div>
+			{% endif %}
+	</div>
 </div>
 
 <div class="card">
 	<h3 style="margin-top: 0px;"> Replies </h3>
 	<form method="POST">
-	<textarea cols="42" rows ="10" name="text"></textarea>
-	<br>
+		<textarea cols="32" rows ="10" name="text"></textarea>
+		<br>
 		<input class="button" type="submit" , value="Reply" style=""> 
+	</form>
 </div>
 <div class="card">
 	<div class="comment">
-	<div class="time"> 1 minute ago </div>
-	Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-	<br>
+		<div class="time"> 1 minute ago </div>
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+	</div>
+	<div style="margin-top: 10px;margin-bottom: 10px">
+		<b>	<a class="replybutton" style="cursor: pointer; padding: 0px;" onclick="expand()">Reply to Comment</a> </b>
+	</div>
+	<form method="POST" id="reply-box" style="display: none;">
+		<textarea cols="32" rows ="10" name="text" style="font-family: inherit;"></textarea>
+		<br>
+		<input class="button" type="submit" style="margin-bottom: 10px;" , value="Reply" style=""> 
+	</form>
 	<div style="margin-left:20px; border-left: 4px solid #979798;">
 		<br>
-	<div style="margin-left: 10px; margin-top: 0px;">
-	Very interesting.
+		<div style="margin-left: 10px; margin-top: 0px;">
+			Very interesting.
+		</div>
+		<br>
 	</div>
-	<br>
+	<div style="margin-left:20px; border-left: 4px solid #979798;">
+		<br>
+		<div style="margin-left: 10px; margin-top: 0px;">
+			Ok but how do you ...?????!!!
+		</div>
+		<br>
 	</div>
-	</div>
-	
+
 </div>
+<div class="card">
+	<div class="comment">
+		<div class="time"> 1 minute ago </div>
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+	</div>
+	<div style="margin-left:20px; border-left: 4px solid #979798;">
+		<br>
+		<div style="margin-left: 10px; margin-top: 0px;">
+			Very interesting.
+		</div>
+		<br>
+	</div>
+	<div style="margin-left:20px; border-left: 4px solid #979798;">
+		<br>
+		<div style="margin-left: 10px; margin-top: 0px;">
+			Ok but how do you ...?????!!!
+		</div>
+		<br>
+	</div>
+
 </div>
 {% include 'footer.html' %}

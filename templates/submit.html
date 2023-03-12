@@ -1,0 +1,17 @@
+{% include 'header.html' %}
+<div class="card">
+	<h1>New Confession</h1>
+	<hr>
+	<h3>Upload Image <div style="display: inline;" class="time">(Optional)</div></h3>
+	<form method="POST" enctype="multipart/form-data">
+		<input class="button" type="file" name="file" style="width: 311px">
+		<br>
+		<h4>Title</h4>
+		<input name="title" style="width: 311px; font-size: 18px;">
+		<h4>Text</h4>
+		<textarea cols="32" rows ="10" name="text"></textarea>
+		<br>
+		<input class="button" type="submit" , value="Submit" style="text-align: center;margin-left: 25px; width: 260.6px;height: 50px"> 
+	</form>
+</div>
+{% include 'footer.html' %}

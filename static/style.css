@@ -6,6 +6,11 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
+textarea {
+   font-family: inherit;
+   font-size: inherit;
+}
+
 header {
   	text-align: center;
 	color: black;
@@ -90,9 +95,12 @@ li a:hover {
 	float: left;
 }
 
+/* Mobile */
 @media screen and (max-width: 800px) {
   ul {
     width: 100%;
+    padding-left: 3px; 
+    padding-right: 3px; 
   }
   .footer {
 	  width: 100%;
@@ -103,6 +111,9 @@ li a:hover {
   .card img {
 	  width: 35%;
   }
+  li a {
+  	padding: 20px 9px;
+}
 }
 
 .card {
@@ -137,12 +148,12 @@ li a:hover {
 .button {
   border: none;
   outline: 0;
+  margin-top: 10px;
   padding: 12px;
-  color: white;
-  background-color: #000;
+  color: black;
+  background-color: #d1e0d9;
   text-align: center;
   cursor: pointer;
-  width: 100%;
   font-size: 18px;
 }
 
@@ -186,4 +197,25 @@ li a:hover {
 
 .posttitle {
 	padding-left: 10px;
+}
+
+.time {
+	color: #979798;
+}
+
+.replybutton {
+    cursor: pointer; 
+    padding: 0px;
+    color: #979798;
+    text-decoration: none;
+}
+
+.replybutton:hover {
+    text-decoration: underline;
+}
+
+.imgcontainer {
+	width: 110px;
+	height: 110px;
+	float: left;
 }
