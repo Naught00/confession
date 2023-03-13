@@ -19,6 +19,7 @@ DATABASE = 'conf.db'
 app = Flask(__name__, static_url_path='/static')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+app.secret_key = b''
 
 @app.route('/')
 def index():
@@ -38,12 +39,12 @@ def index():
         replies = con.execute("SELECT * FROM replies WHERE post_id=?", (posts[i][0],))
         replies = replies.fetchall()
         posts[i] += (len(replies),)
-        print("post count", posts[i][5])
+        print("post count", posts[i][6])
         i += 1
 
 
     for post in posts:
-        print("post count", post[5])
+        print("post count", post[6])
 
 
     return render_template('index.html', next_page=next_page, posts=posts, now=now, stamp=stamp)
@@ -82,6 +83,7 @@ def post(post_id):
     replies_to_replies = con.execute("SELECT * FROM replies_to_replies WHERE post_id=?", (post_id,))
 
     posts = posts.fetchone()
+    print("POSTS:", posts[5])
 
     # If we have a poll
     poll = None
@@ -113,22 +115,27 @@ def submit():
 
     db = get_db()
     if request.method == 'POST':
-        token = request.form['h-captcha-response']
+        token = request.form['g-recaptcha-response']
+
         params = {
-           'secret': '0xe1a71744C8544b5c69eAc6B33Ef26B4E2d00B4F1',
+           'secret': '',
            'response': token
         }
-        resp_json = requests.post('https://hcaptcha.com/siteverify', params)
+
+        resp_json = requests.post('https://www.google.com/recaptcha/api/siteverify', params)
         resp = resp_json.json()
-        if resp['success']:
-            print("yay")
+
+        print(resp['success'])
+        if resp['success'] != True:
+            return "<h1> Robot Detected! </h1>"
+
 
         title = request.form['title']
         text = request.form['text']
 
         poll_id = 0
         poll = False
-        if request.form['boolean']:
+        if request.form['boolean'] == 'true':
             poll = True
             poll_title = request.form['poll_title']
             poll_option1 = request.form['poll_option1']
@@ -147,13 +154,13 @@ def submit():
         if file.filename != '':
             if allowed_file(file.filename):
                 filename = secure_filename(file.filename)
-                print("here")
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                 db = get_db()
 
 
                 if poll:
                     db.execute("INSERT INTO posts (title, text, pic, timestamp, poll_id) VALUES(?, ?, ?, ?, ?)", (title, text, filename, timestamp, poll_id))
+                    print("at poll here")
                 else:
                     db.execute("INSERT INTO posts (title, text, pic, timestamp) VALUES(?, ?, ?, ?)", (title, text, filename, timestamp))
 
@@ -163,8 +170,10 @@ def submit():
 
         if poll:
             db.execute("INSERT INTO posts (title, text, timestamp, poll_id) VALUES(?, ?, ?, ?)", (title, text, timestamp, poll_id))
+            print("at poll here")
         else:
             db.execute("INSERT INTO posts (title, text, timestamp) VALUES(?, ?, ?)", (title, text, timestamp))
+            print("here")
 
         db.commit()
 
@@ -239,3 +248,34 @@ def reply_to_comment():
     db.commit()
 
     return redirect(f"/post/{post_id}")
+
+
+@app.route('/vote', methods=['POST'])
+def vote():
+    now = int(time.time())
+    print(now)
+    stamp = datetime.utcfromtimestamp(now).strftime('%Y-%m-%d %H:%M:%S')
+
+    db = get_db()
+
+    vote = request.form['vote']
+    post_id = request.form['post_id']
+    poll_id = request.form['poll_id']
+
+    if poll_id in session:
+        flash("You Can Only Vote Once!")
+        return post(post_id)
+
+    print(vote)
+
+    option = None
+    if vote == 'Vote 1':
+        db.execute("UPDATE polls SET option1p = option1p + 1 where id=?", (poll_id,))
+    else:
+        db.execute("UPDATE polls SET option2p = option2p + 1 where id=?", (poll_id,))
+
+    session[poll_id] = "voted"
+    db.commit()
+    db.close()
+    return redirect(f"/post/{post_id}")
+

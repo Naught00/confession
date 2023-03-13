@@ -36,12 +36,12 @@
 		{% endif %}
 			<br>
 			<button onclick="window.location.href='/post/{{ post[0] }}'">
-				{% if post[5] == 1 %}
-				{{ post[5] }} Reply
-				{% elif post[5] == 0 %}
+				{% if post[6] == 1 %}
+				{{ post[6] }} Reply
+				{% elif post[6] == 0 %}
 				Reply
 				{% else %}
-				{{ post[5] }} Replies
+				{{ post[6] }} Replies
 				{% endif %}
 			</button>
 		</div>

@@ -21,7 +21,7 @@
 			{% elif now - post[4] < 86400 %}
 			<div class="time" stlye="margin-top: 0px;"> Submitted: {{ ((now - post[4]) / 60 / 60)|int }} hours ago
 			{% else %}
-			<div class="time" stlye="margin-top: 0px;"> Submitted: {{ stamp }} </div> 
+			<div class="time" stlye="margin-top: 0px;"> Submitted: {{ stamp }}
 			{% endif %}
 			{%if post[3] %}
 			<a class="replybutton" style="cursor: pointer;" href="/static/images/uploads/{{ post[3] }}"><b>Expand Image</b></a> </div>
@@ -37,7 +37,7 @@
 
 
 {% if post[5] %}
-<div class="card">
+<div class="card" style="padding-left: 5%;padding-right: 5%;">
   <h1>Poll</h1>
   <hr>
   <h2>{{ poll[1] }} </h2>
@@ -45,12 +45,23 @@
 	  <span class="poll-option__label">{{ poll[2] }}</span>
     <table class="poll-option__result">
       <tr>
-        <td>200 Votes</td>
+
+	{% if poll[4] == 1 %}
+	      <td style="float:left;">{{ poll[4] }} Vote</td>
+        {% else %}
+	      <td style="float:left;">{{ poll[4] }} Votes</td>
+	{% endif %}
         <td>
           <span></span>
           <span style="width: 25%;"></span>
         </td>
-        <td>25%</td>
+	{% if (poll[4] + poll[5]) == 0 %}
+	<td style="">50%</td> 
+	{% elif ((poll[4] / (poll[4] + poll[5])) * 100)|int == 100 %}
+	<td style="float: right;padding-right: 30%;">{{ ((poll[4] / (poll[4] + poll[5])) * 100)|int }}%</td>
+	{% else %}
+	<td style="float: right;padding-right: 50%;">{{ ((poll[4] / (poll[4] + poll[5])) * 100)|int }}%</td>
+	{% endif %}
       </tr>
     </table>
   </div>
@@ -59,14 +70,38 @@
 	  <span class="poll-option__label">{{ poll[3] }}</span>
     <table class="poll-option__result">
       <tr>
-        <td>123 Votes</td>
+	{% if poll[5] == 1 %}
+	      <td style="float:left;">{{ poll[5] }} Vote</td>
+        {% else %}
+	      <td style="float:left;">{{ poll[5] }} Votes</td>
+	{% endif %}
         <td>
           <span></span>
           <span style="width: 53%;"></span>
         </td>
-        <td>53%</td>
+	{% if (poll[4] + poll[5]) == 0 %}
+	<td>50%</td> </td>
+	{% else %}
+	<td style="float: right;padding-right: 50%;">{{ ((poll[5] / (poll[4] + poll[5])) * 100)|int }}%</td>
+	{% endif %}
       </tr>
     </table>
+    <br>
+    {% with messages = get_flashed_messages() %}
+ {% if messages %}
+  {% for message in messages %}
+  <div style="text-align: center">
+  <strong style="color: red">{{ message }}</strong>
+  </div>
+  {% endfor %}
+ {% endif %}
+{% endwith %}
+    <form method="post" action="/vote">
+	    <input type="submit" name="vote" value="Vote 1" class="button" style="margin-right: 5%;margin-left: 5%; width: 40%;">  </input>
+	    <input type="submit" class="button" style="display: inline; width: 40%;" name="vote" value="Vote 2"> </button>
+    <input type="hidden" class="button" style="display: inline; width: 40%;" name="post_id" value="{{ post[0] }}"> </input>
+    <input type="hidden" class="button" style="display: inline; width: 40%;" name="poll_id" value="{{ poll[0] }}"> </input>
+    </form>
   </div>
 
 
