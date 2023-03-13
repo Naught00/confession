@@ -11,11 +11,26 @@
 			<h2 style="margin-top: 0px;"> {{ post[1] }} </h2>  
 		{{ post[2] }}
 			<br>
-			<button onclick="window.location.href='/post/{{ post[0] }}'">Replies</button>
+			<button onclick="window.location.href='/post/{{ post[0] }}'">
+				{% if post[4] == 1 %}
+				{{ post[4] }} Reply
+				{% elif post[4] == 0 %}
+				Reply
+				{% else %}
+				{{ post[4] }} Replies
+				{% endif %}
+			</button>
 		</div>
 </div>
 {% endfor %}
-<div class="card" style="margin-top: 0px; padding-left: 110px;">
+<div class="cardbot" style="margin-top: 0px;">
+	{%if back_button %}
+	{%if next_page == 40 %}
+	<button class="button" onclick="window.location.href='/'" > Previous Page </button>
+	{% else %}
+	<button class="button" style="margin: auto;" onclick="window.location.href='/page/{{ previous_page }}'" > Previous Page </button>
+	{% endif %}
+	{% endif %}
 	<button class="button" onclick="window.location.href='/page/{{ next_page }}'" > Next Page </button>
 </div>
 {% include 'footer.html' %}

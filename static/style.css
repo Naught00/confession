@@ -94,6 +94,19 @@ li a:hover {
 	width: 10%;
 	float: left;
 }
+.cardbot {
+  background-color: #ffffff;
+  padding: 10px;
+  padding-bottom: 15px;
+  padding-top: 15px;
+  margin-top: 20px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  max-width: 940px;
+  margin: auto;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  padding-left: 16%;
+}
 
 /* Mobile */
 @media screen and (max-width: 800px) {
@@ -114,6 +127,9 @@ li a:hover {
   li a {
   	padding: 20px 9px;
 }
+ .cardbot {
+	padding-left: 10%;
+  }
 }
 
 .card {

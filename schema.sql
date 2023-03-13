@@ -6,8 +6,15 @@ CREATE TABLE posts (
 );
 
 CREATE TABLE replies (
-	id INTEGER KEY,
+	id INTEGER PRIMARY KEY,
+	post_id INTEGER,
 	reply TEXT 
 );
 
 
+CREATE TABLE replies_to_replies (
+	id INTEGER PRIMARY KEY,
+	post_id INTEGER,
+	reply_id INTEGER,
+	reply TEXT 
+);

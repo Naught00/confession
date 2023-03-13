@@ -23,60 +23,41 @@
 
 <div class="card">
 	<h3 style="margin-top: 0px;"> Replies </h3>
-	<form method="POST">
+	<form method="POST", action="/reply">
 		<textarea cols="32" rows ="10" name="text"></textarea>
 		<br>
+		<input name="post_id" type="hidden", value="{{ post[0] }}"> 
 		<input class="button" type="submit" , value="Reply" style=""> 
 	</form>
 </div>
+{% for reply in replies %}
 <div class="card">
 	<div class="comment">
 		<div class="time"> 1 minute ago </div>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		{{ reply[2] }}
 	</div>
 	<div style="margin-top: 10px;margin-bottom: 10px">
 		<b>	<a class="replybutton" style="cursor: pointer; padding: 0px;" onclick="expand()">Reply to Comment</a> </b>
 	</div>
-	<form method="POST" id="reply-box" style="display: none;">
+	<form method="POST" id="reply-box" style="display: none;" action="/reply-to-comment">
 		<textarea cols="32" rows ="10" name="text" style="font-family: inherit;"></textarea>
 		<br>
+		<input name="reply_id" type="hidden" style="margin-bottom: 10px;" , value="{{ reply[0] }}" style=""> 
+		<input name="post_id" type="hidden" style="margin-bottom: 10px;" , value="{{ post[0] }}" style=""> 
 		<input class="button" type="submit" style="margin-bottom: 10px;" , value="Reply" style=""> 
 	</form>
+
+	{% for reply_to_replies in replies_to_replies if reply_to_replies[2] == reply[0]%}
 	<div style="margin-left:20px; border-left: 4px solid #979798;">
 		<br>
 		<div style="margin-left: 10px; margin-top: 0px;">
-			Very interesting.
+			{{ reply_to_replies[3] }}
 		</div>
 		<br>
 	</div>
-	<div style="margin-left:20px; border-left: 4px solid #979798;">
-		<br>
-		<div style="margin-left: 10px; margin-top: 0px;">
-			Ok but how do you ...?????!!!
-		</div>
-		<br>
-	</div>
+	{% endfor %}
+
 
 </div>
-<div class="card">
-	<div class="comment">
-		<div class="time"> 1 minute ago </div>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-	</div>
-	<div style="margin-left:20px; border-left: 4px solid #979798;">
-		<br>
-		<div style="margin-left: 10px; margin-top: 0px;">
-			Very interesting.
-		</div>
-		<br>
-	</div>
-	<div style="margin-left:20px; border-left: 4px solid #979798;">
-		<br>
-		<div style="margin-left: 10px; margin-top: 0px;">
-			Ok but how do you ...?????!!!
-		</div>
-		<br>
-	</div>
-
-</div>
+{% endfor %}
 {% include 'footer.html' %}
