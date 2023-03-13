@@ -4,9 +4,13 @@ from flask import g
 from flask import  flash, request, redirect, url_for
 from flask import send_from_directory, make_response
 from flask import session
-import os
 import sqlite3
 from werkzeug.utils import secure_filename
+import os
+import time
+from datetime import datetime
+import json
+import requests
 
 UPLOAD_FOLDER = '/home/naught/prj/conf/static/images/uploads/'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
@@ -18,32 +22,38 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 @app.route('/')
 def index():
+    now = int(time.time())
+    print(now)
+    stamp = datetime.utcfromtimestamp(now).strftime('%Y-%m-%d %H:%M:%S')
+    print(stamp)
+
     con = get_db()
     next_page = 20
     posts = con.execute("select * from posts order by id desc limit 20;")
     posts = posts.fetchall()
+    print(posts)
 
     i = 0
     for _ in posts:
         replies = con.execute("SELECT * FROM replies WHERE post_id=?", (posts[i][0],))
         replies = replies.fetchall()
         posts[i] += (len(replies),)
-        print("post count", posts[i][4])
+        print("post count", posts[i][5])
         i += 1
 
 
     for post in posts:
-        print("post count", post[4])
+        print("post count", post[5])
 
-    print(posts[0][3])
-    print(posts)
-    print(posts[1][3])
-    print(posts[2][3])
 
-    return render_template('index.html', next_page=next_page, posts=posts)
+    return render_template('index.html', next_page=next_page, posts=posts, now=now, stamp=stamp)
 
 @app.route('/page/<index>')
 def index_amount(index):
+    now = int(time.time())
+    print(now)
+    stamp = datetime.utcfromtimestamp(now).strftime('%Y-%m-%d %H:%M:%S')
+    print(stamp)
     back_button = True
 
     con = get_db()
@@ -58,10 +68,13 @@ def index_amount(index):
     posts = posts[index:]
 
 
-    return render_template('index.html', next_page=next_page, posts=posts, back_button=back_button, previous_page=previous_page)
+    return render_template('index.html', next_page=next_page, posts=posts, back_button=back_button, previous_page=previous_page, now=now, stamp=stamp)
 
 @app.route('/post/<post_id>')
 def post(post_id):
+    now = int(time.time())
+    print(now)
+    stamp = datetime.utcfromtimestamp(now).strftime('%Y-%m-%d %H:%M:%S')
     con = get_db()
 
     posts = con.execute("SELECT * FROM posts WHERE id=?", (post_id,))
@@ -69,6 +82,13 @@ def post(post_id):
     replies_to_replies = con.execute("SELECT * FROM replies_to_replies WHERE post_id=?", (post_id,))
 
     posts = posts.fetchone()
+
+    # If we have a poll
+    poll = None
+    if posts[5]:
+        poll_id = posts[5]
+        poll = con.execute("SELECT * FROM polls WHERE id=?", (poll_id,))
+        poll = poll.fetchone()
 
     replies = replies.fetchall()
     replies_to_replies = replies_to_replies.fetchall()
@@ -79,19 +99,49 @@ def post(post_id):
         return "<h1> Page Not Found!</h1> Invalid Confession ID"
 
     if replies == None:
-        return render_template('post.html', post=posts)
-    elif replies_to_replies == None:
-        return render_template('post.html', post=posts, replies=replies)
+        return render_template('post.html', post=posts, now=now, stamp=stamp, poll=poll)
+
+    if replies_to_replies == None:
+        return render_template('post.html', post=posts, replies=replies, now=now, stamp=stamp, poll=poll)
 
     print("REPLIES", replies)
-    return render_template('post.html', post=posts, replies=replies, replies_to_replies=replies_to_replies)
+    return render_template('post.html', post=posts, replies=replies, replies_to_replies=replies_to_replies, now=now, stamp=stamp, poll=poll)
 
 @app.route('/submit', methods=['GET', 'POST'])
 def submit():
+    timestamp = int(time.time())
+
     db = get_db()
     if request.method == 'POST':
+        token = request.form['h-captcha-response']
+        params = {
+           'secret': '0xe1a71744C8544b5c69eAc6B33Ef26B4E2d00B4F1',
+           'response': token
+        }
+        resp_json = requests.post('https://hcaptcha.com/siteverify', params)
+        resp = resp_json.json()
+        if resp['success']:
+            print("yay")
+
         title = request.form['title']
         text = request.form['text']
+
+        poll_id = 0
+        poll = False
+        if request.form['boolean']:
+            poll = True
+            poll_title = request.form['poll_title']
+            poll_option1 = request.form['poll_option1']
+            poll_option2 = request.form['poll_option2']
+            db.execute("INSERT INTO polls (title, option1, option2, option1p, option2p) VALUES(?, ?, ?, ?, ?)", (poll_title, poll_option1, poll_option2, 0, 0))
+
+            max_poll = db.execute("SELECT MAX(id) from polls;")
+            max_poll = max_poll.fetchall()
+            print(max_poll)
+            if max_poll == None:
+                poll_id = 1
+            else:
+                poll_id = max_poll[0][0]
 
         file = request.files['file']
         if file.filename != '':
@@ -100,15 +150,21 @@ def submit():
                 print("here")
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                 db = get_db()
-                db.execute("INSERT INTO posts (title, text, pic) VALUES(?, ?, ?)", 
-                           (title, text, filename))
+
+
+                if poll:
+                    db.execute("INSERT INTO posts (title, text, pic, timestamp, poll_id) VALUES(?, ?, ?, ?, ?)", (title, text, filename, timestamp, poll_id))
+                else:
+                    db.execute("INSERT INTO posts (title, text, pic, timestamp) VALUES(?, ?, ?, ?)", (title, text, filename, timestamp))
 
                 db.commit()
 
                 return redirect('/')
 
-        db.execute("INSERT INTO posts (title, text) VALUES(?, ?)", 
-                   (title, text))
+        if poll:
+            db.execute("INSERT INTO posts (title, text, timestamp, poll_id) VALUES(?, ?, ?, ?)", (title, text, timestamp, poll_id))
+        else:
+            db.execute("INSERT INTO posts (title, text, timestamp) VALUES(?, ?, ?)", (title, text, timestamp))
 
         db.commit()
 
@@ -141,6 +197,10 @@ def allowed_file(filename):
 
 @app.route('/reply', methods=['POST'])
 def reply():
+    now = int(time.time())
+    print(now)
+    stamp = datetime.utcfromtimestamp(now).strftime('%Y-%m-%d %H:%M:%S')
+
     db = get_db()
 
     text = request.form['text']
@@ -150,8 +210,8 @@ def reply():
     if len(text) > 20000:
         return "Post too big!"
 
-    db.execute("INSERT INTO replies (post_id, reply) VALUES(?, ?)", 
-               (post_id, text))
+    db.execute("INSERT INTO replies (post_id, reply, timestamp) VALUES(?, ?, ?)", 
+               (post_id, text, now))
 
     db.commit()
 
@@ -159,6 +219,10 @@ def reply():
 
 @app.route('/reply-to-comment', methods=['POST'])
 def reply_to_comment():
+    now = int(time.time())
+    print(now)
+    stamp = datetime.utcfromtimestamp(now).strftime('%Y-%m-%d %H:%M:%S')
+
     db = get_db()
 
     text = request.form['text']
@@ -169,8 +233,8 @@ def reply_to_comment():
     if len(text) > 20000:
         return "Post too big!"
 
-    db.execute("INSERT INTO replies_to_replies (post_id, reply_id, reply) VALUES(?, ?, ?)", 
-               (post_id, reply_id, text))
+    db.execute("INSERT INTO replies_to_replies (post_id, reply_id, reply, timestamp) VALUES(?, ?, ?, ?)", 
+               (post_id, reply_id, text, now))
 
     db.commit()
 

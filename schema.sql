@@ -3,6 +3,7 @@ CREATE TABLE posts (
 	title TEXT NOT NULL,
 	text TEXT NOT NULL,
 	pic TEXT, 
+	poll_id integer
 );
 
 CREATE TABLE replies (
@@ -17,4 +18,13 @@ CREATE TABLE replies_to_replies (
 	post_id INTEGER,
 	reply_id INTEGER,
 	reply TEXT 
+);
+
+CREATE TABLE polls (
+	id INTEGER PRIMARY KEY,
+	title text,
+	option1 text,
+	option2 text,
+	option1p integer,
+	option2p integer
 );

@@ -3,21 +3,45 @@
 
 <div class="card">
 	{% if post[3] %}
+	<a href="/static/images/uploads/{{ post[3] }}">
 	<img style="width: 92px; height: 65px"src="/static/images/uploads/{{ post[3] }}"/> 
+	</a>
 	{% else %}
 	<img src="/static/images/anthony-gormley-cropped.webp" style=""/> 
 	{% endif %}
-		<div class="posttitle" style="padding-left: 120px;">
-			<h2 style="margin-top: 0px;"> {{ post[1] }} </h2>  
+		<div class="posttitle" style="">
+			<h2 style="margin-top: 0px; margin-bottom: 0px"> {{ post[1]|truncate(140) }} </h2>  
+			{% if post[4] %}
+			{% if now - post[4] < 60 %}
+			<div class="time" stlye="margin-top: 0px;"> Submitted: just now</div> <br>
+			{% elif now - post[4] < 120 %}
+			<div class="time" stlye="margin-top: 0px;"> Submitted: {{ ((now - post[4]) / 60)|int }} minute ago</div> <br>
+			{% elif now - post[4] < 3600 %}
+			<div class="time" stlye="margin-top: 0px;"> Submitted: {{ ((now - post[4]) / 60)|int }} minutes ago</div> <br>
+			{% elif now - post[4] < 7200 %}
+			<div class="time" stlye="margin-top: 0px;"> Submitted: {{ ((now - post[4]) / 60 / 60)|int }} hour ago</div> <br>
+			{% elif now - post[4] < 86400 %}
+			<div class="time" stlye="margin-top: 0px;"> Submitted: {{ ((now - post[4]) / 60 / 60)|int }} hours ago</div> <br>
+			{% else %}
+			<div class="time" stlye="margin-top: 0px;"> Submitted: {{ stamp }} </div> <br>
+			{% endif %}
+			{% endif %}
+		{%if post[2]|length > 500 %}
+		{{ post[2]|truncate(500) }}
+	<div style="margin-top: 10px;margin-bottom: 10px; display: inline">
+		<b>	<a class="replybutton" style="cursor: pointer; padding: 0px;" onclick="location.href = '/post/{{ post[0] }}'">Show More</a> </b>
+	</div>
+		{% else %}
 		{{ post[2] }}
+		{% endif %}
 			<br>
 			<button onclick="window.location.href='/post/{{ post[0] }}'">
-				{% if post[4] == 1 %}
-				{{ post[4] }} Reply
-				{% elif post[4] == 0 %}
+				{% if post[5] == 1 %}
+				{{ post[5] }} Reply
+				{% elif post[5] == 0 %}
 				Reply
 				{% else %}
-				{{ post[4] }} Replies
+				{{ post[5] }} Replies
 				{% endif %}
 			</button>
 		</div>

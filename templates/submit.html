@@ -6,11 +6,31 @@
 	<form method="POST" enctype="multipart/form-data">
 		<input class="button" type="file" name="file" style="width: 311px">
 		<br>
+<!--		<a class="Reply Button" onclick="">
+		<h3>Add Poll <div style="display: inline;" class="time">(Optional)</div> </h3>
+		</a>
+		--!>
+		<br>
 		<h4>Title</h4>
 		<input name="title" style="width: 311px; font-size: 18px;">
 		<h4>Text</h4>
 		<textarea cols="32" rows ="10" name="text"></textarea>
 		<br>
+	<div style="margin-top: 10px;margin-bottom: 10px">
+		<b>	<a class="replybutton" style="cursor: pointer; padding: 0px;" onclick="expand_poll()">Add Poll (Optional)</a> </b>
+		<div id="poll_options" style="display: none;">
+		<input value="false" type="hidden" id="boolean" name="boolean">
+			<h4> Poll Title </h4>
+			<input name="poll_title" style="width: 311px; font-size: 18px;">
+			<h4> Option 1  </h4>
+			<input name="poll_option1" style="width: 311px; font-size: 18px;">
+			<h4> Option 2 </h4>
+			<input name="poll_option2" style="width: 311px; font-size: 18px;">
+		</div>
+
+	</div>
+		  <div class="h-captcha" data-sitekey="a59f1a32-0afb-447b-885c-bb528362d189"></div>
+  <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
 		<input class="button" type="submit" , value="Submit" style="text-align: center;margin-left: 25px; width: 260.6px;height: 50px"> 
 	</form>
 </div>

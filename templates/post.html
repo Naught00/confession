@@ -2,24 +2,76 @@
 
 <div class="card">
 	{%if post[3] %}
+	<a href="/static/images/uploads/{{ post[3] }}">
 	<img style="width: 92px; height: 65px" src="/static/images/uploads/{{ post[3] }}" />
+	</a>
 	{% else %}
 <img src="/static/images/anthony-gormley-cropped.webp"/> 
         {% endif %}
-	<div class="posttitle" style="padding-left: 120px;">
+	<div class="posttitle" style="">
 		<h2 style="margin-top: 0px;margin-bottom: 0px"> {{ post[1] }} </h2>  
-		<div class="time"> Submitted: 1 hour ago 
-		</div>
+			{% if now - post[4] < 60 %}
+			<div class="time" stlye="margin-top: 0px;"> Submitted: just now
+			{% elif now - post[4] < 120 %}
+			<div class="time" stlye="margin-top: 0px;"> Submitted: {{ ((now - post[4]) / 60)|int }} minute ago
+			{% elif now - post[4] < 3600 %}
+			<div class="time" stlye="margin-top: 0px;"> Submitted: {{ ((now - post[4]) / 60)|int }} minutes ago
+			{% elif now - post[4] < 7200 %}
+			<div class="time" stlye="margin-top: 0px;"> Submitted: {{ ((now - post[4]) / 60 / 60)|int }} hour ago
+			{% elif now - post[4] < 86400 %}
+			<div class="time" stlye="margin-top: 0px;"> Submitted: {{ ((now - post[4]) / 60 / 60)|int }} hours ago
+			{% else %}
+			<div class="time" stlye="margin-top: 0px;"> Submitted: {{ stamp }} </div> 
+			{% endif %}
+			{%if post[3] %}
+			<a class="replybutton" style="cursor: pointer;" href="/static/images/uploads/{{ post[3] }}"><b>Expand Image</b></a> </div>
+			{% else %}
+	</div>
+			{% endif %}
 		<br>
 		{{ post[2] }}
 		<br>
-			{%if post[3] %}
-	<div style="margin-top: 10px;margin-bottom: 10px">
-			<a class="replybutton" style="cursor: pointer;" href="/static/images/uploads/{{ post[3] }}"><b>Expand Image</b></a>
 	</div>
-			{% endif %}
 	</div>
 </div>
+
+
+{% if post[5] %}
+<div class="card">
+  <h1>Poll</h1>
+  <hr>
+  <h2>{{ poll[1] }} </h2>
+  <div class="poll-option">
+	  <span class="poll-option__label">{{ poll[2] }}</span>
+    <table class="poll-option__result">
+      <tr>
+        <td>200 Votes</td>
+        <td>
+          <span></span>
+          <span style="width: 25%;"></span>
+        </td>
+        <td>25%</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="poll-option">
+	  <span class="poll-option__label">{{ poll[3] }}</span>
+    <table class="poll-option__result">
+      <tr>
+        <td>123 Votes</td>
+        <td>
+          <span></span>
+          <span style="width: 53%;"></span>
+        </td>
+        <td>53%</td>
+      </tr>
+    </table>
+  </div>
+
+
+</div>
+{% endif %}
 
 <div class="card">
 	<h3 style="margin-top: 0px;"> Replies </h3>
@@ -33,13 +85,26 @@
 {% for reply in replies %}
 <div class="card">
 	<div class="comment">
-		<div class="time"> 1 minute ago </div>
+			{% if now - reply[3] < 60 %}
+			<div class="time" stlye="margin-top: 0px;"> Submitted: just now</div> 
+			{% elif now - reply[3] < 120 %}
+			<div class="time" stlye="margin-top: 0px;"> Submitted: {{ ((now - reply[3]) / 60)|int }} minute ago</div> 
+			{% elif now - reply[3] < 3600 %}
+			<div class="time" stlye="margin-top: 0px;"> Submitted: {{ ((now - reply[3]) / 60)|int }} minutes ago</div> 
+			{% elif now - reply[3] < 7200 %}
+			<div class="time" stlye="margin-top: 0px;"> Submitted: {{ ((now - reply[3]) / 60 / 60)|int }} hour ago</div>
+			{% elif now - reply[3] < 86400 %}
+			<div class="time" stlye="margin-top: 0px;"> Submitted: {{ ((now - reply[3]) / 60 / 60)|int }} hours ago</div> 
+			{% else %}
+			<div class="time" stlye="margin-top: 0px;"> Submitted: {{ stamp }} </div> 
+			{% endif %}
+			<br>
 		{{ reply[2] }}
 	</div>
 	<div style="margin-top: 10px;margin-bottom: 10px">
-		<b>	<a class="replybutton" style="cursor: pointer; padding: 0px;" onclick="expand()">Reply to Comment</a> </b>
+		<b>	<a class="replybutton" style="cursor: pointer; padding: 0px;" onclick="expand({{ reply[0] }})">Reply to Comment</a> </b>
 	</div>
-	<form method="POST" id="reply-box" style="display: none;" action="/reply-to-comment">
+	<form method="POST" id="{{ reply[0] }}" style="display: none;" action="/reply-to-comment">
 		<textarea cols="32" rows ="10" name="text" style="font-family: inherit;"></textarea>
 		<br>
 		<input name="reply_id" type="hidden" style="margin-bottom: 10px;" , value="{{ reply[0] }}" style=""> 
@@ -51,6 +116,19 @@
 	<div style="margin-left:20px; border-left: 4px solid #979798;">
 		<br>
 		<div style="margin-left: 10px; margin-top: 0px;">
+			{% if now - reply_to_replies[4] < 60 %}
+			<div class="time" stlye="margin-top: 0px;"> Submitted: just now</div> <br>
+			{% elif now - reply_to_replies[4] < 120 %}
+			<div class="time" stlye="margin-top: 0px;"> Submitted: {{ ((now - reply_to_replies[4]) / 60)|int }} minute ago</div> <br>
+			{% elif now - reply_to_replies[4] < 3600 %}
+			<div class="time" stlye="margin-top: 0px;"> Submitted: {{ ((now - reply_to_replies[4]) / 60)|int }} minutes ago</div> <br>
+			{% elif now - reply_to_replies[4] < 7200 %}
+			<div class="time" stlye="margin-top: 0px;"> Submitted: {{ ((now - reply_to_replies[4]) / 60 / 60)|int }} hour ago</div> <br>
+			{% elif now - reply_to_replies[4] < 86400 %}
+			<div class="time" stlye="margin-top: 0px;"> Submitted: {{ ((now - reply_to_replies[4]) / 60 / 60)|int }} hours ago</div> <br>
+			{% else %}
+			<div class="time" stlye="margin-top: 0px;"> Submitted: {{ stamp }} </div> <br>
+			{% endif %}
 			{{ reply_to_replies[3] }}
 		</div>
 		<br>

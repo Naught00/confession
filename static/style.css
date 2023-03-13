@@ -108,6 +108,11 @@ li a:hover {
   padding-left: 16%;
 }
 
+.posttitle {
+	padding-left: 120px;
+	word-wrap: break-word;
+}
+
 /* Mobile */
 @media screen and (max-width: 800px) {
   ul {
@@ -122,13 +127,16 @@ li a:hover {
 	  width: 100%;
   }
   .card img {
-	  width: 35%;
+	  width: 25%;
   }
   li a {
   	padding: 20px 9px;
 }
  .cardbot {
 	padding-left: 10%;
+  }
+ .posttitle {
+	padding-left: 90px;
   }
 }
 
@@ -210,11 +218,6 @@ li a:hover {
   margin-bottom: 20px;
 }
 
-
-.posttitle {
-	padding-left: 10px;
-}
-
 .time {
 	color: #979798;
 }
@@ -234,4 +237,59 @@ li a:hover {
 	width: 110px;
 	height: 110px;
 	float: left;
+}
+
+.poll-option {
+  margin-bottom: 25px;
+}
+
+span.poll-option__label {
+  font-weight: bold;
+}
+
+table.poll-option__result {
+  width: 100%;
+
+  tr, td {
+    padding: 0;
+  }
+
+  td:nth-child(odd) {
+    width: 40px;
+  }
+
+  td:nth-child(even) {
+    border: 0;
+    height: 100%;
+    position: relative;
+    vertical-align: center;
+    width: 100%;
+  }
+
+  td:first-child {
+    padding-right: 20px;
+  }
+
+  td:last-child {
+    padding-left: 20px;
+  }
+
+  span {
+    border-radius: 3px;
+    display: block;
+    height: 6px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  span:first-child {
+    background: rgba(0, 0, 0, 0.1);
+    width: 100%;
+  }
+
+  span:last-child {
+    background: aliceblue;
+    background-image: linear-gradient(to right, #ff5a00, #e3a417);
+  }
 }
