@@ -44,6 +44,11 @@
 				{{ post[6] }} Replies
 				{% endif %}
 			</button>
+			{% if post[5] %}
+			<button onclick="window.location.href='/post/{{ post[0] }}'">
+				Show Poll
+			</button>
+			{% endif %}
 		</div>
 </div>
 {% endfor %}
