@@ -3,7 +3,7 @@ CREATE TABLE posts (
         title TEXT NOT NULL,
         text TEXT NOT NULL,
         pic TEXT
-, timestamp integer, poll_id integer);
+, timestamp integer, poll_id integer, is_link boolean);
 CREATE TABLE replies (
         id INTEGER PRIMARY KEY,
         post_id INTEGER,

@@ -4,16 +4,21 @@
 <div class="card">
 	{% if post[3] %}
 	<a href="/static/images/uploads/{{ post[3] }}">
-	<img style="width: 92px; height: 65px"src="/static/images/uploads/{{ post[3] }}"/> 
+	<img style=" max-height: 110px"src="/static/images/uploads/{{ post[3] }}"/> 
 	</a>
 	{% else %}
 	<img src="/static/images/anthony-gormley-cropped.webp" style=""/> 
 	{% endif %}
 		<div class="posttitle" style="">
+			{% if post[6] %}
+			<a href="https://{{ post[1]|truncate(140) }}"><h2 style="margin-top: 0px; margin-bottom: 0px"> {{ post[1]|truncate(140) }} </h2> </a>
+			{% else %}
 			<h2 style="margin-top: 0px; margin-bottom: 0px"> {{ post[1]|truncate(140) }} </h2>  
+			{% endif %}
+
 			{% if post[4] %}
 			{% if now - post[4] < 60 %}
-			<div class="time" stlye="margin-top: 0px;"> Submitted: just now</div> <br>
+			<div class="time" stlye="margin-top: 0px;"> Submitted: just now
 			{% elif now - post[4] < 120 %}
 			<div class="time" stlye="margin-top: 0px;"> Submitted: {{ ((now - post[4]) / 60)|int }} minute ago
 			{% elif now - post[4] < 3600 %}
@@ -40,12 +45,12 @@
 		{% endif %}
 			<br>
 			<button onclick="window.location.href='/post/{{ post[0] }}'">
-				{% if post[6] == 1 %}
-				{{ post[6] }} Reply
-				{% elif post[6] == 0 %}
+				{% if post[7] == 1 %}
+				{{ post[7] }} Reply
+				{% elif post[7] == 0 %}
 				Reply
 				{% else %}
-				{{ post[6] }} Replies
+				{{ post[7] }} Replies
 				{% endif %}
 			</button>
 			{% if post[5] %}

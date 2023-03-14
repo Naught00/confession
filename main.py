@@ -12,7 +12,7 @@ from datetime import datetime
 import json
 import requests
 
-UPLOAD_FOLDER = '/home/ul/confessions/static/images/uploads/'
+UPLOAD_FOLDER = '/home/naught/prj/conf/static/images/uploads'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 DATABASE = 'conf.db'
 
@@ -133,6 +133,10 @@ def submit():
         title = request.form['title']
         text = request.form['text']
 
+        link = False
+        if request.form['is_link'] == 'on':
+            link = True
+
         poll_id = 0
         poll = False
         if request.form['boolean'] == 'true':
@@ -159,21 +163,18 @@ def submit():
 
 
                 if poll:
-                    db.execute("INSERT INTO posts (title, text, pic, timestamp, poll_id) VALUES(?, ?, ?, ?, ?)", (title, text, filename, timestamp, poll_id))
-                    print("at poll here")
+                    db.execute("INSERT INTO posts (title, text, pic, timestamp, poll_id, is_link) VALUES(?, ?, ?, ?, ?, ?)", (title, text, filename, timestamp, poll_id, link))
                 else:
-                    db.execute("INSERT INTO posts (title, text, pic, timestamp) VALUES(?, ?, ?, ?)", (title, text, filename, timestamp))
+                    db.execute("INSERT INTO posts (title, text, pic, timestamp, is_link) VALUES(?, ?, ?, ?, ?)", (title, text, filename, timestamp, link))
 
                 db.commit()
 
                 return redirect('/')
 
         if poll:
-            db.execute("INSERT INTO posts (title, text, timestamp, poll_id) VALUES(?, ?, ?, ?)", (title, text, timestamp, poll_id))
-            print("at poll here")
+            db.execute("INSERT INTO posts (title, text, timestamp, poll_id, is_link) VALUES(?, ?, ?, ?)", (title, text, timestamp, poll_id, link))
         else:
-            db.execute("INSERT INTO posts (title, text, timestamp) VALUES(?, ?, ?)", (title, text, timestamp))
-            print("here")
+            db.execute("INSERT INTO posts (title, text, timestamp, is_link) VALUES(?, ?, ?, ?)", (title, text, timestamp, link))
 
         db.commit()
 
