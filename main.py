@@ -13,7 +13,7 @@ import json
 import requests
 
 UPLOAD_FOLDER = '/home/naught/prj/conf/static/images/uploads'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'svg'}
 DATABASE = 'conf.db'
 
 app = Flask(__name__, static_url_path='/static')
@@ -134,7 +134,7 @@ def submit():
         text = request.form['text']
 
         link = False
-        if request.form['is_link'] == 'on':
+        if request.form['is_link'] == '1':
             link = True
 
         poll_id = 0
