@@ -15,17 +15,21 @@
 			{% if now - post[4] < 60 %}
 			<div class="time" stlye="margin-top: 0px;"> Submitted: just now</div> <br>
 			{% elif now - post[4] < 120 %}
-			<div class="time" stlye="margin-top: 0px;"> Submitted: {{ ((now - post[4]) / 60)|int }} minute ago</div> <br>
+			<div class="time" stlye="margin-top: 0px;"> Submitted: {{ ((now - post[4]) / 60)|int }} minute ago
 			{% elif now - post[4] < 3600 %}
-			<div class="time" stlye="margin-top: 0px;"> Submitted: {{ ((now - post[4]) / 60)|int }} minutes ago</div> <br>
+			<div class="time" stlye="margin-top: 0px;"> Submitted: {{ ((now - post[4]) / 60)|int }} minutes ago
 			{% elif now - post[4] < 7200 %}
-			<div class="time" stlye="margin-top: 0px;"> Submitted: {{ ((now - post[4]) / 60 / 60)|int }} hour ago</div> <br>
+			<div class="time" stlye="margin-top: 0px;"> Submitted: {{ ((now - post[4]) / 60 / 60)|int }} hour ago
 			{% elif now - post[4] < 86400 %}
-			<div class="time" stlye="margin-top: 0px;"> Submitted: {{ ((now - post[4]) / 60 / 60)|int }} hours ago</div> <br>
+			<div class="time" stlye="margin-top: 0px;"> Submitted: {{ ((now - post[4]) / 60 / 60)|int }} hours ago
 			{% else %}
-			<div class="time" stlye="margin-top: 0px;"> Submitted: {{ stamp }} </div> <br>
+			<div class="time" stlye="margin-top: 0px;"> Submitted: {{ stamp }} 
 			{% endif %}
 			{% endif %}
+			{%if post[3] %}
+			<a class="replybutton" style="cursor: pointer;" href="/static/images/uploads/{{ post[3] }}"><b>Expand Image</b></a> 
+			{% endif %}
+			</div> <br>
 		{%if post[2]|length > 500 %}
 		{{ post[2]|truncate(500) }}
 	<div style="margin-top: 10px;margin-bottom: 10px; display: inline">
