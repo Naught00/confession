@@ -42,6 +42,13 @@ def index():
         print("post count", posts[i][6])
         i += 1
 
+    i = 0
+    for _ in posts:
+        posts[i] += (datetime.utcfromtimestamp(posts[i][4]).strftime('%Y-%m-%d %H:%M:%S'),)
+        print(posts[i][9])
+        i += 1
+
+
 
     for post in posts:
         print("post count", post[6])
@@ -163,18 +170,18 @@ def submit():
 
 
                 if poll:
-                    db.execute("INSERT INTO posts (title, text, pic, timestamp, poll_id, is_link) VALUES(?, ?, ?, ?, ?, ?)", (title, text, filename, timestamp, poll_id, link))
+                    db.execute("INSERT INTO posts (title, text, pic, timestamp, poll_id, is_link, last_reply_timestamp) VALUES(?, ?, ?, ?, ?, ?, ?)", (title, text, filename, timestamp, poll_id, link, timestamp))
                 else:
-                    db.execute("INSERT INTO posts (title, text, pic, timestamp, is_link) VALUES(?, ?, ?, ?, ?)", (title, text, filename, timestamp, link))
+                    db.execute("INSERT INTO posts (title, text, pic, timestamp, is_link, last_reply_timestamp) VALUES(?, ?, ?, ?, ?, ?)", (title, text, filename, timestamp, link, timestamp))
 
                 db.commit()
 
                 return redirect('/')
 
         if poll:
-            db.execute("INSERT INTO posts (title, text, timestamp, poll_id, is_link) VALUES(?, ?, ?, ?, ?)", (title, text, timestamp, poll_id, link))
+            db.execute("INSERT INTO posts (title, text, timestamp, poll_id, is_link, last_relpy_timestamp) VALUES(?, ?, ?, ?, ?, ?)", (title, text, timestamp, poll_id, link, timestamp))
         else:
-            db.execute("INSERT INTO posts (title, text, timestamp, is_link) VALUES(?, ?, ?, ?)", (title, text, timestamp, link))
+            db.execute("INSERT INTO posts (title, text, timestamp, is_link, last_reply_timestamp) VALUES(?, ?, ?, ?, ?)", (title, text, timestamp, link, timestamp))
 
         db.commit()
 
@@ -222,6 +229,8 @@ def reply():
 
     db.execute("INSERT INTO replies (post_id, reply, timestamp) VALUES(?, ?, ?)", 
                (post_id, text, now))
+    db.execute("UPDATE posts set last_reply_timestamp=? where id=?", (now, post_id)
+               )
 
     db.commit()
 

@@ -28,7 +28,7 @@
 			{% elif now - post[4] < 86400 %}
 			<div class="time" stlye="margin-top: 0px;"> Submitted: {{ ((now - post[4]) / 60 / 60)|int }} hours ago
 			{% else %}
-			<div class="time" stlye="margin-top: 0px;"> Submitted: {{ stamp }} 
+			<div class="time" stlye="margin-top: 0px;"> Submitted: {{ post[9] }} 
 			{% endif %}
 			{% endif %}
 			{%if post[3] %}
@@ -45,12 +45,12 @@
 		{% endif %}
 			<br>
 			<button onclick="window.location.href='/post/{{ post[0] }}'">
-				{% if post[7] == 1 %}
-				{{ post[7] }} Reply
-				{% elif post[7] == 0 %}
+				{% if post[8] == 1 %}
+				{{ post[8] }} Reply
+				{% elif post[8] == 0 %}
 				Reply
 				{% else %}
-				{{ post[7] }} Replies
+				{{ post[8] }} Replies
 				{% endif %}
 			</button>
 			{% if post[5] %}
