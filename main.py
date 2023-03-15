@@ -172,7 +172,7 @@ def submit():
                 return redirect('/')
 
         if poll:
-            db.execute("INSERT INTO posts (title, text, timestamp, poll_id, is_link) VALUES(?, ?, ?, ?)", (title, text, timestamp, poll_id, link))
+            db.execute("INSERT INTO posts (title, text, timestamp, poll_id, is_link) VALUES(?, ?, ?, ?, ?)", (title, text, timestamp, poll_id, link))
         else:
             db.execute("INSERT INTO posts (title, text, timestamp, is_link) VALUES(?, ?, ?, ?)", (title, text, timestamp, link))
 

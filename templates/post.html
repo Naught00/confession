@@ -86,6 +86,8 @@
         </td>
 	{% if (poll[4] + poll[5]) == 0 %}
 	<td>50%</td> </td>
+	{% elif ((poll[5] / (poll[4] + poll[5])) * 100)|int == 100 %}
+	<td style="float: right;padding-right: 30%;">{{ ((poll[5] / (poll[4] + poll[5])) * 100)|int }}%</td>
 	{% else %}
 	<td style="float: right;padding-right: 50%;">{{ ((poll[5] / (poll[4] + poll[5])) * 100)|int }}%</td>
 	{% endif %}
