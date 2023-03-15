@@ -12,7 +12,7 @@ from datetime import datetime
 import json
 import requests
 
-UPLOAD_FOLDER = '/home/naught/prj/conf/static/images/uploads'
+UPLOAD_FOLDER = '/home/ul/confessions/static/images/uploads'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'svg'}
 DATABASE = 'conf.db'
 
