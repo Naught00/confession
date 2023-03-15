@@ -277,6 +277,5 @@ def vote():
 
     session[poll_id] = "voted"
     db.commit()
-    db.close()
     return redirect(f"/post/{post_id}")
 

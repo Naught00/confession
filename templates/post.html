@@ -9,7 +9,12 @@
 <img src="/static/images/anthony-gormley-cropped.webp"/> 
         {% endif %}
 	<div class="posttitle" style="">
-		<h2 style="margin-top: 0px;margin-bottom: 0px"> {{ post[1] }} </h2>  
+	{% if post[6] %}
+	<a href="https://{{ post[1] }}"><h2 style="margin-top: 0px; margin-bottom: 0px"> {{ post[1] }} </h2> </a>
+		{% else %}
+		<h2 style="margin-top: 0px;margin-bottom: 0px"> {{ post[1] }} </h2>
+		{% endif %}
+
 			{% if now - post[4] < 60 %}
 			<div class="time" stlye="margin-top: 0px;"> Submitted: just now
 			{% elif now - post[4] < 120 %}
