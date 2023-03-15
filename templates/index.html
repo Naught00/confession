@@ -41,7 +41,7 @@
 		<b>	<a class="replybutton" style="cursor: pointer; padding: 0px;" onclick="location.href = '/post/{{ post[0] }}'">Show More</a> </b>
 	</div>
 		{% else %}
-		{{ post[2] }}
+		<div style="font-family: inherit; font-size: inherit;word-wrap: break-word; white-space: pre-line; margin: 0px; padding: 0px; display: inline;"> {{ post[2] }} </div>
 		{% endif %}
 			<br>
 			<button onclick="window.location.href='/post/{{ post[0] }}'">
