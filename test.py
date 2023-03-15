@@ -1,4 +1,5 @@
 import sqlite3
+import time
 
 con = sqlite3.connect("test.db")
 posts = con.execute("SELECT * FROM posts ")
@@ -6,7 +7,8 @@ posts = con.execute("SELECT * FROM posts ")
 print(posts.fetchall())
 for i in range(100):
     con.execute("INSERT INTO posts (title, text, timestamp, last_reply_timestamp) VALUES(?, ?, ?, ?)", 
-               (i, i, i, i))
+               (i, i, int(time.time()), int(time.time())))
+
 con.commit()
 con.close()
 

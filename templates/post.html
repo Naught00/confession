@@ -28,14 +28,31 @@
 			{% else %}
 			<div class="time" stlye="margin-top: 0px;"> Submitted: {{ stamp }}
 			{% endif %}
+			{% if post[7] and amount_replies > 0 %}
+			|
+			{% if now - post[7] < 60 %}
+			Last Reply: just now
+			{% elif now - post[7] < 120 %}
+			Last Reply: {{ ((now - post[7]) / 60)|int }} minute ago
+			{% elif now - post[7] < 3600 %}
+			Last Reply: {{ ((now - post[7]) / 60)|int }} minutes ago
+			{% elif now - post[7] < 7200 %}
+			Last Reply: {{ ((now - post[7]) / 60 / 60)|int }} hour ago
+			{% elif now - post[7] < 86400 %}
+			Last Reply: {{ ((now - post[7]) / 60 / 60)|int }} hours ago
+			{% else %}
+			Last Reply: {{ last_reply_stamp }} 
+			{% endif %}
+			{% endif %}
+
 			{%if post[3] %}
+			|
 			<a class="replybutton" style="cursor: pointer;" href="/static/images/uploads/{{ post[3] }}"><b>Expand Image</b></a> </div>
 			{% else %}
 	</div>
 			{% endif %}
 		<br>
 		<div style="font-family: inherit; font-size: inherit;word-wrap: break-word; white-space: pre-line; margin: 0px; padding: 0px; display: inline;"> {{ post[2] }} </div>
-		{{ post[2] }}
 		<br>
 	</div>
 	</div>

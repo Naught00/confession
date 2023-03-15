@@ -30,7 +30,7 @@ def index():
 
     con = get_db()
     next_page = 20
-    posts = con.execute("select * from posts order by id desc limit 20;")
+    posts = con.execute("select * from posts order by last_reply_timestamp desc limit 20;")
     posts = posts.fetchall()
     print(posts)
 
@@ -51,7 +51,15 @@ def index():
 
 
     for post in posts:
-        print("post count", post[6])
+        print("LAST REPLY TIMESTAMP", post[7])
+
+    i = 0
+    for _ in posts:
+        if posts[i][7]:
+            posts[i] += (datetime.utcfromtimestamp(posts[i][7]).strftime('%Y-%m-%d %H:%M:%S'),)
+            print(posts[i][10])
+        i += 1
+
 
 
     return render_template('index.html', next_page=next_page, posts=posts, now=now, stamp=stamp)
@@ -71,9 +79,30 @@ def index_amount(index):
     previous_page = index - 20
     print("PREVIOUS PAGE:", previous_page)
 
-    posts = con.execute("select * from posts order by id desc limit ?;", (next_page,))
+    posts = con.execute("select * from posts order by last_reply_timestamp desc limit ?;", (next_page,))
     posts = posts.fetchall()
     posts = posts[index:]
+
+    i = 0
+    for _ in posts:
+        replies = con.execute("SELECT * FROM replies WHERE post_id=?", (posts[i][0],))
+        replies = replies.fetchall()
+        posts[i] += (len(replies),)
+        print("post count", posts[i][6])
+        i += 1
+
+    i = 0
+    for _ in posts:
+        posts[i] += (datetime.utcfromtimestamp(posts[i][4]).strftime('%Y-%m-%d %H:%M:%S'),)
+        print(posts[i][9])
+        i += 1
+
+    i = 0
+    for _ in posts:
+        if posts[i][7]:
+            posts[i] += (datetime.utcfromtimestamp(posts[i][7]).strftime('%Y-%m-%d %H:%M:%S'),)
+            print(posts[i][10])
+        i += 1
 
 
     return render_template('index.html', next_page=next_page, posts=posts, back_button=back_button, previous_page=previous_page, now=now, stamp=stamp)
@@ -100,21 +129,29 @@ def post(post_id):
         poll = poll.fetchone()
 
     replies = replies.fetchall()
+    amount_replies = len(replies)
+
     replies_to_replies = replies_to_replies.fetchall()
     print(replies_to_replies)
+
     replies.reverse()
+    last_reply_stamp = None
+
+
+    if posts[7]:
+        last_reply_stamp = datetime.utcfromtimestamp(posts[7]).strftime('%Y-%m-%d %H:%M:%S')
 
     if posts == None:
         return "<h1> Page Not Found!</h1> Invalid Confession ID"
 
     if replies == None:
-        return render_template('post.html', post=posts, now=now, stamp=stamp, poll=poll)
+        return render_template('post.html', post=posts, now=now, stamp=stamp, poll=poll, amount_replies=amount_replies, last_reply_stamp=last_reply_stamp)
 
     if replies_to_replies == None:
-        return render_template('post.html', post=posts, replies=replies, now=now, stamp=stamp, poll=poll)
+        return render_template('post.html', post=posts, replies=replies, now=now, stamp=stamp, poll=poll, amount_replies=amount_replies, last_reply_stamp=last_reply_stamp)
 
     print("REPLIES", replies)
-    return render_template('post.html', post=posts, replies=replies, replies_to_replies=replies_to_replies, now=now, stamp=stamp, poll=poll)
+    return render_template('post.html', post=posts, replies=replies, replies_to_replies=replies_to_replies, now=now, stamp=stamp, poll=poll, amount_replies=amount_replies, last_reply_stamp=last_reply_stamp)
 
 @app.route('/submit', methods=['GET', 'POST'])
 def submit():

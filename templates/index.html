@@ -31,7 +31,28 @@
 			<div class="time" stlye="margin-top: 0px;"> Submitted: {{ post[9] }} 
 			{% endif %}
 			{% endif %}
+
+			{% if post[8] %}
+			{% if post[7] and post[8] > 0 %}
+			|
+			{% if now - post[7] < 60 %}
+			Last Reply: just now
+			{% elif now - post[7] < 120 %}
+			Last Reply: {{ ((now - post[7]) / 60)|int }} minute ago
+			{% elif now - post[7] < 3600 %}
+			Last Reply: {{ ((now - post[7]) / 60)|int }} minutes ago
+			{% elif now - post[7] < 7200 %}
+			Last Reply: {{ ((now - post[7]) / 60 / 60)|int }} hour ago
+			{% elif now - post[7] < 86400 %}
+			Last Reply: {{ ((now - post[7]) / 60 / 60)|int }} hours ago
+			{% else %}
+			Last Reply: {{ post[10] }} 
+			{% endif %}
+			{% endif %}
+			{% endif %}
+
 			{%if post[3] %}
+			|
 			<a class="replybutton" style="cursor: pointer;" href="/static/images/uploads/{{ post[3] }}"><b>Expand Image</b></a> 
 			{% endif %}
 			</div> <br>
