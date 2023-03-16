@@ -37,8 +37,11 @@ def index():
     i = 0
     for _ in posts:
         replies = con.execute("SELECT * FROM replies WHERE post_id=?", (posts[i][0],))
+        replies_to_replies = con.execute("SELECT * FROM replies_to_replies WHERE post_id=?", (posts[i][0],))
         replies = replies.fetchall()
-        posts[i] += (len(replies),)
+        replies_to_replies = replies_to_replies.fetchall()
+        amount_replies = len(replies) + len(replies_to_replies)
+        posts[i] += (amount_replies,) 
         print("post count", posts[i][6])
         i += 1
 
