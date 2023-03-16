@@ -159,7 +159,7 @@
 			<div class="time" stlye="margin-top: 0px;"> Submitted: {{ stamp }} </div> 
 			{% endif %}
 			<br>
-		{{ reply[2] }}
+		<div style="font-family: inherit; font-size: inherit;word-wrap: break-word; white-space: pre-line; margin: 0px; padding: 0px; display: inline;">{{ reply[2] }}</div>
 	</div>
 	<div style="margin-top: 10px;margin-bottom: 10px">
 		<b>	<a class="replybutton" style="cursor: pointer; padding: 0px;" onclick="expand({{ reply[0] }})">Reply to Comment</a> </b>
@@ -189,7 +189,22 @@
 			{% else %}
 			<div class="time" stlye="margin-top: 0px;"> Submitted: {{ stamp }} </div> <br>
 			{% endif %}
-			{{ reply_to_replies[3] }}
+		<div style="font-family: inherit; font-size: inherit;word-wrap: break-word; white-space: pre-line; margin: 0px; padding: 0px; display: inline;">{{ reply_to_replies[3] }}</div>
+	<div style="margin-top: 10px;margin-bottom: 10px">
+		<b>	<a class="replybutton" style="cursor: pointer; padding: 0px;" onclick="expand({{ reply_to_replies[0]+ replies|length }})">Reply to Comment</a> </b>
+	</div>
+	<!-- HACK: Reply to replies and normal replies might have the same id.
+	     This means we could expand a normal reply elsewhere in the post
+	     by replying to a reply to a reply. The id is offset by the amount 
+	     of replies to give new unique ids.
+	--!>
+	<form method="POST" id="{{ reply_to_replies[0] + replies|length }}" style="display: none;" action="/reply-to-comment">
+		<textarea cols="32" rows ="10" name="text" style="font-family: inherit;"></textarea>
+		<br>
+		<input name="reply_id" type="hidden" style="margin-bottom: 10px;" , value="{{ reply[0] }}" style=""> 
+		<input name="post_id" type="hidden" style="margin-bottom: 10px;" , value="{{ post[0] }}" style=""> 
+		<input class="button" type="submit" style="margin-bottom: 10px;" , value="Reply" style=""> 
+	</form>
 		</div>
 		<br>
 	</div>
