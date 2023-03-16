@@ -10,12 +10,14 @@ CREATE TABLE replies (
         post_id INTEGER,
         reply TEXT
 , timestamp integer);
+
 CREATE TABLE replies_to_replies (
         id INTEGER PRIMARY KEY,
         post_id INTEGER,
         reply_id INTEGER,
         reply TEXT
 , timestamp integer);
+
 CREATE TABLE polls (
         id INTEGER PRIMARY KEY,
         title text,

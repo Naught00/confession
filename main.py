@@ -4,6 +4,8 @@ from flask import g
 from flask import  flash, request, redirect, url_for
 from flask import send_from_directory, make_response
 from flask import session
+from flask import send_from_directory
+
 import sqlite3
 from werkzeug.utils import secure_filename
 import os
@@ -331,3 +333,6 @@ def vote():
     db.commit()
     return redirect(f"/post/{post_id}")
 
+@app.route('/sitemap.xml')
+def srv_static_folder():
+    return send_from_directory(app.static_folder, request.path[1:])
