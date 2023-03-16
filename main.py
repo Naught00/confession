@@ -292,6 +292,9 @@ def reply_to_comment():
     db.execute("INSERT INTO replies_to_replies (post_id, reply_id, reply, timestamp) VALUES(?, ?, ?, ?)", 
                (post_id, reply_id, text, now))
 
+    db.execute("UPDATE posts set last_reply_timestamp=? where id=?", (now, post_id)
+               )
+
     db.commit()
 
     return redirect(f"/post/{post_id}")
