@@ -1,0 +1,22 @@
+diff --git a/main.py b/main.py
+index 8fb57fb..2b90dd3 100644
+--- a/main.py
++++ b/main.py
+@@ -12,7 +12,7 @@ from datetime import datetime
+ import json
+ import requests
+ 
+-UPLOAD_FOLDER = '/home/ul/confessions/static/images/uploads'
++UPLOAD_FOLDER = '/home/naught/prj/conf/static/images/uploads'
+ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'svg'}
+ DATABASE = 'conf.db'
+ 
+@@ -127,7 +127,7 @@ def submit():
+ 
+         print(resp['success'])
+         if resp['success'] != True:
+-            return "<h1> Robot Detected! </h1>"
++            print("wow")
+ 
+ 
+         title = request.form['title']

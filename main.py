@@ -14,14 +14,14 @@ from datetime import datetime
 import json
 import requests
 
-UPLOAD_FOLDER = '/home/ul/confessions/static/images/uploads'
+UPLOAD_FOLDER = os.getenv("UPLOADS_DIRECTORY")
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'svg'}
 DATABASE = 'conf.db'
 
 app = Flask(__name__, static_url_path='/static')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
-app.secret_key = b''
+app.secret_key = os.getenv("CONF_SECRET_KEY")
 
 @app.route('/')
 def index():
