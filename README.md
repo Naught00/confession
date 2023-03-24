@@ -17,9 +17,13 @@ Set the secret key to be used for message flashing:
 
     $ export CONF_SECRET_KEY=<key>
 
-Set the directory to be used for user image uploads
+Set the directory to be used for user image uploads:
 
     $ export UPLOADS_DIRECTORY=/path/to/directory
+
+Optionall set the Captcha secret key:
+    
+    $ export CAPTCHA_KEY=<key>
 
 Start uwsgi:
     
