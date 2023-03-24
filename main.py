@@ -15,6 +15,7 @@ import json
 import requests
 
 UPLOAD_FOLDER = os.getenv("UPLOADS_DIRECTORY")
+CAPTCHA_KEY = os.getenv("CAPTCHA_KEY")
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'svg'}
 DATABASE = 'conf.db'
 
@@ -167,7 +168,7 @@ def submit():
         token = request.form['g-recaptcha-response']
 
         params = {
-           'secret': '',
+           'secret': CAPTCHA_KEY,
            'response': token
         }
 
