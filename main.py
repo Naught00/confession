@@ -16,7 +16,7 @@ import requests
 
 UPLOAD_FOLDER = os.getenv("UPLOADS_DIRECTORY")
 CAPTCHA_KEY = os.getenv("CAPTCHA_KEY")
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'svg'}
+ALLOWED_EXTENSIONS = {'webp', 'png', 'jpg', 'jpeg', 'gif', 'svg'}
 DATABASE = 'conf.db'
 
 app = Flask(__name__, static_url_path='/static')
